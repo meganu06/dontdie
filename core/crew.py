@@ -65,3 +65,4 @@ async def run_crew(settings, question, send, cloud_factory=CloudRun):
         folder = ROOT / "runs"
         folder.mkdir(exist_ok=True)
         (folder / (run_id + ".json")).write_text(json.dumps(record, indent=2))
+        print("DONTDIE_RUN_COMPLETE " + json.dumps({"run_id": run_id, "statuses": {r: v["status"] for r, v in results.items()}, "sandbox_ids": cloud.sandboxes, "cleanup_errors": cloud.cleanup_errors}), flush=True)

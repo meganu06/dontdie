@@ -6,10 +6,13 @@ import logging
 import os
 import re
 import time
+import json
+import uuid
 from collections import OrderedDict
 
 from core.crew import run_crew
-from core.settings import ICONS, NAMES, QUESTION, Settings
+from core.cloud import CloudRun
+from core.settings import ICONS, NAMES, QUESTION, ROOT, Settings
 
 
 class EventDeduper:
@@ -124,11 +127,24 @@ async def console_send(agent, text, result=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--once", metavar="QUESTION", help="Run all seven cloud agents without posting to Slack")
+    parser.add_argument("--check-cloud", action="store_true", help="Verify Gemini and a temporary sandbox with the current cloud identity")
     args = parser.parse_args()
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(message)s")
     settings = Settings.from_env()
     try:
-        if args.once:
+        if args.check_cloud:
+            cloud = CloudRun(settings, "preflight-" + uuid.uuid4().hex[:8])
+            try:
+                cloud.start()
+                data = json.loads((ROOT / "data/loopdesk.json").read_text())
+                result = cloud.agent("chief", {"kpis": data["kpis"]}, "Report the supplied demo business KPIs for a startup health check.")
+                print("DONTDIE_CLOUD_READY " + result["sandbox_id"], flush=True)
+            except Exception as exc:
+                print("DONTDIE_CLOUD_FAILED " + type(exc).__name__, flush=True)
+                raise SystemExit(1)
+            finally:
+                cloud.close()
+        elif args.once:
             record = asyncio.run(run_crew(settings, args.once, console_send))
             print("Saved runs/" + record["run_id"] + ".json")
             if any(r["status"] != "ok" for r in record["agents"].values()):

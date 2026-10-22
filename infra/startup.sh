@@ -4,6 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
 apt-get install -y -q python3 python3-venv git ca-certificates curl
 id dontdie >/dev/null 2>&1 || useradd --system --create-home dontdie
+systemctl stop dontdie.service 2>/dev/null || true
 install -d -o dontdie -g dontdie /opt/dontdie
 metadata() { curl --fail --silent --show-error -H 'Metadata-Flavor: Google' "http://metadata.google.internal/computeMetadata/v1/$1"; }
 revision=$(metadata instance/attributes/dontdie-revision)
@@ -40,7 +41,9 @@ Wants=network-online.target
 User=dontdie
 Group=dontdie
 WorkingDirectory=/opt/dontdie
+ExecStartPre=/opt/dontdie/.venv/bin/python -u /opt/dontdie/bot.py --check-cloud
 ExecStart=/opt/dontdie/.venv/bin/python -u /opt/dontdie/bot.py
+TimeoutStartSec=600
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true
@@ -55,6 +58,7 @@ WantedBy=multi-user.target
 UNIT
 install -d -o dontdie -g dontdie /opt/dontdie/runs
 systemctl daemon-reload
-systemctl enable --now dontdie.service
+systemctl enable dontdie.service
+systemctl restart dontdie.service
 systemctl is-active dontdie.service
 echo 'DONTDIE_BOOT_READY'
