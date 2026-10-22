@@ -151,3 +151,35 @@ def test_web_auth_csrf_origin_and_schedule_controls(tmp_path):
             assert followup['agent']=='retention' and followup['conversation_id']==queued['conversation_id']
             assert (await client.get('/api/state')).status == 200
     asyncio.run(scenario())
+
+
+def test_specialist_failure_remains_visible_to_chief(tmp_path):
+    store = Store(tmp_path / "db")
+    queued = store.enqueue("Review churn")
+    run = store.claim()
+    observed = {}
+
+    class FailingCloud:
+        def __init__(self, settings, run_id, event=None):
+            self.model = None
+            self.sandboxes, self.cleanup_errors = {}, []
+        def start(self):
+            pass
+        def agent(self, role, data, question, upstream):
+            if role == "retention":
+                raise TimeoutError("Simulated cloud timeout")
+            observed.update(upstream)
+            return {"agent": role, "status": "ok", "summary": "Retention evidence is unavailable.", "confidence": "low", "findings": [], "proposed_actions": []}
+        def close(self):
+            observed["cleanup"] = True
+
+    def planner(*args):
+        return Plan(reply="Check churn", tasks=[{"agent": "retention", "instruction": "Check cancellations", "reason": "Churn question"}])
+
+    asyncio.run(Engine(store, Settings("test"), FailingCloud, planner).execute(run))
+    state = store.state(queued["conversation_id"])
+    assert state["run"]["status"] == "partial"
+    assert next(t for t in state["tasks"] if t["agent"] == "retention")["status"] == "error"
+    assert observed["retention"]["status"] == "error"
+    assert observed["cleanup"]
+    assert any(e["kind"] == "ERROR" for e in state["events"])

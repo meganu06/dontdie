@@ -30,6 +30,8 @@ The startup script uses the exact commit in instance metadata `dontdie-revision`
 
 The coordinator stores conversations, messages, runs, tasks, source evidence, code, events, sessions, schedules and Slack event IDs in `/opt/dontdie/runs/controlroom.sqlite3` (SQLite WAL). This directory is retained on the persistent boot disk across stop/start and deployments; do not delete the VM/disk to restart the app. The database is not automatically backed up off-VM. Legacy console receipts remain as JSON under the same directory.
 
+The Google metadata startup script starts `dontdie.service` after installing the pinned checkout. The unit is deliberately disabled from independent boot activation to avoid a competing preflight before bootstrap finishes. Once started, systemd's `Restart=on-failure` still supervises it. Both the metadata startup script and VM must remain enabled for unattended operation.
+
 The queue processes objectives one at a time; independent specialists in one plan execute concurrently. Due scheduled occurrences are claimed transactionally in the database, not triggered by a browser. Restart recovery marks interrupted runs for explicit retry and preserves queued jobs/schedules. A schedule overdue after downtime catches up once. Pause/delete cancel queued occurrences; already-running work finishes. A single-instance file lock prevents competing workers in the same checkout.
 
 Sandboxes are deleted in cleanup and have a one-hour TTL as a fallback. A runtime deletion failure is recorded for manual cleanup; TTL applies to the sandbox, not its parent runtime. Review ERROR activity when cleanup fails. Stopping the VM stops scheduling until it resumes.

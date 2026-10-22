@@ -67,7 +67,10 @@ UNIT
 install -d -o dontdie -g dontdie /opt/dontdie/runs
 chmod 700 /opt/dontdie/runs
 systemctl daemon-reload
-systemctl enable dontdie.service
+# The Google startup script owns boot sequencing. Enabling this unit at boot
+# starts a competing preflight before the pinned checkout is installed.
+# systemd still restarts the running service automatically on failure.
+systemctl disable dontdie.service
 systemctl restart dontdie.service
 systemctl is-active dontdie.service
 web_host=$(metadata instance/attributes/dontdie-web-host)
