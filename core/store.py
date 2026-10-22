@@ -94,6 +94,8 @@ class Store:
             row = self.one("SELECT * FROM runs WHERE status='queued' ORDER BY created LIMIT 1")
             if row:
                 self.db.execute("UPDATE runs SET status='running',started=? WHERE id=?", (time.time(), row["id"]))
+                if row.get("schedule_id"):
+                    self.db.execute("UPDATE schedules SET last_status='running' WHERE id=?", (row["schedule_id"],))
             return row
 
     def event(self, run_id, agent, kind, text, details=None, task_id=None, action_state="executed"):
@@ -197,9 +199,11 @@ class Store:
             result = json.loads(task.pop("result_json") or "{}")
             task["summary"] = result.get("summary", "")
             task["depends_on"] = json.loads(task.pop("depends_json") or "[]")
+        active_tasks = self.rows("SELECT t.id,t.agent,t.instruction,t.status FROM tasks t JOIN runs r ON r.id=t.run_id WHERE r.status='running' AND t.status IN ('queued','waiting','running') ORDER BY t.rowid")
+        live_events = list(reversed(self.rows("SELECT id,run_id,task_id,agent,kind,action_state,text,created FROM events ORDER BY id DESC LIMIT 150")))
         events = self.rows("SELECT id,run_id,task_id,agent,kind,action_state,text,created FROM events WHERE run_id=? ORDER BY id DESC LIMIT 150", (run["id"] if run else None,))
         schedules = [self.schedule(r["id"]) for r in self.rows("SELECT id FROM schedules WHERE status!='deleted' ORDER BY created DESC")]
         if run:
             run["plan"] = json.loads(run.pop("plan_json") or "{}")
             run.pop("result_json", None)
-        return {"conversations": conversations, "conversation_id": cid, "messages": list(reversed(self.rows("SELECT * FROM messages WHERE conversation_id=? ORDER BY id DESC LIMIT 200", (cid,)))), "runs": runs, "run": run, "tasks": tasks, "events": list(reversed(events)), "schedules": schedules, "queue_count": self.one("SELECT COUNT(*) AS n FROM runs WHERE status='queued'")["n"], "data_mode": "Synthetic Loopdesk demo data", "server_time": time.time()}
+        return {"conversations": conversations, "conversation_id": cid, "messages": list(reversed(self.rows("SELECT * FROM messages WHERE conversation_id=? ORDER BY id DESC LIMIT 200", (cid,)))), "runs": runs, "run": run, "tasks": tasks, "active_tasks": active_tasks, "live_events": live_events, "events": list(reversed(events)), "schedules": schedules, "queue_count": self.one("SELECT COUNT(*) AS n FROM runs WHERE status='queued'")["n"], "data_mode": "Synthetic Loopdesk demo data", "server_time": time.time()}

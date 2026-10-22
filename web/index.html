@@ -15,7 +15,7 @@
   <header class="masthead"><div class="brand"><strong>Don’t Die<span class="brand-dot">.</span></strong><span>CONTROL ROOM</span></div><div class="header-right"><span class="data-badge">SYNTHETIC BUSINESS DATA</span><span id="connection" class="connection">Connecting</span><button id="logout" class="quiet">Sign out</button></div></header>
   <div id="notice" class="notice" role="status" hidden></div>
   <div class="shell" id="shell" data-view="chief">
-    <aside class="crew-panel" aria-label="Agent roster"><div class="section-line"><h2>Your crew</h2><span class="count">7</span></div><p class="muted small">Each executing agent gets its own Google sandbox.</p><div id="roster"></div><div class="crew-note"><span class="small-label">OPERATING BOUNDARY</span><p>Agents analyse and propose. No live SaaS access, outreach or pricing changes.</p></div></aside>
+    <aside class="crew-panel" aria-label="Agent roster"><div class="section-line"><h2>Your crew</h2><span class="count">7</span></div><p class="muted small">Each executing agent gets its own Google sandbox. Live work takes priority over selected history.</p><div id="roster"></div><div class="crew-note"><span class="small-label">OPERATING BOUNDARY</span><p>Agents analyse and propose. No live SaaS access, outreach or pricing changes.</p></div></aside>
     <main>
       <nav class="tabs" aria-label="Control room views"><button data-tab="chief" class="selected">Chief</button><button data-tab="schedules">Schedules <span id="schedule-count">0</span></button><button data-tab="history">History</button></nav>
       <section id="chief-view" class="view">
@@ -30,7 +30,7 @@
       <section id="schedules-view" class="view" hidden><div class="page-heading"><div><p class="eyebrow">WORK THAT CONTINUES WITHOUT YOU</p><h1>On the calendar.</h1></div><button id="new-schedule" class="primary">Create schedule</button></div><p class="intro">Runs execute on Google Cloud when your browser and laptop are closed. Pause or delete to stop future runs.</p><div id="schedules"></div><p class="fine">Intervals, daily and weekly runs coalesce if the previous occurrence is still working. Daily times follow the selected timezone.</p></section>
       <section id="history-view" class="view" hidden><div class="page-heading"><div><p class="eyebrow">PERSISTENT WORKSPACE</p><h1>The record.</h1></div></div><p class="intro">Conversations, tasks and results stay here across service restarts.</p><div id="history"></div></section>
     </main>
-    <aside class="activity-panel"><div class="section-line"><h2>Live activity</h2><span id="queue-count" class="muted small"></span></div><p class="muted small">Execution records and short public explanations—not private model reasoning.</p><div id="activity" class="activity"></div></aside>
+    <aside class="activity-panel"><div class="section-line"><h2>Live activity</h2><span id="queue-count" class="muted small"></span></div><p class="muted small">Across all conversations: execution records and public explanations.</p><div id="activity" class="activity"></div></aside>
   </div>
 </div>
 

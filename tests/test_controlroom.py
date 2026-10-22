@@ -34,6 +34,16 @@ def test_schedule_claim_is_persistent_and_not_duplicated(tmp_path):
     assert reopened.schedule(schedule["id"])["last_status"] == "queued"
     assert len(reopened.rows("SELECT * FROM runs")) == 1
     assert reopened.state()["messages"][0]["role"] == "system"
+    run = reopened.claim()
+    assert reopened.schedule(schedule["id"])["last_status"] == "running"
+    tid = reopened.task(run["id"], "finance", "Review runway", "Scheduled", [])
+    reopened.update_task(tid, status="running")
+    other = reopened.conversation("Another conversation")
+    reopened.event(run["id"], "finance", "FOUND", "Evidence checked", task_id=tid)
+    state = reopened.state(other)
+    assert state["tasks"] == []
+    assert state["active_tasks"][0]["id"] == tid
+    assert state["live_events"][0]["task_id"] == tid
 
 
 def test_pause_resume_delete_and_oneoff(tmp_path):
