@@ -52,7 +52,7 @@ class Store:
     def recover(self):
         with self.lock, self.db:
             now = time.time()
-            self.db.execute("UPDATE tasks SET status='error',error='Interrupted by service restart; retry this task.',finished=? WHERE status IN ('running','queued') AND run_id IN (SELECT id FROM runs WHERE status='running')", (now,))
+            self.db.execute("UPDATE tasks SET status='error',error='Interrupted by service restart; retry this task.',finished=? WHERE status IN ('running','queued','waiting') AND run_id IN (SELECT id FROM runs WHERE status='running')", (now,))
             self.db.execute("UPDATE runs SET status='interrupted',error='Service restarted during this run; retry to continue.',finished=? WHERE status='running'", (now,))
             self.db.execute("UPDATE schedules SET last_status='interrupted' WHERE last_run IN (SELECT id FROM runs WHERE status='interrupted')")
 

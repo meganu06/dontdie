@@ -69,9 +69,12 @@ def test_restart_marks_interrupted_work_and_preserves_queue(tmp_path):
     claimed = store.claim()
     task = store.task(claimed["id"], "retention", "Check cancellations", "Relevant", [])
     store.update_task(task, status="running")
+    chief = store.task(claimed["id"], "chief", "Reconcile findings", "Await specialists", [])
+    store.update_task(chief, status="waiting")
     store.recover()
     assert store.one("SELECT status FROM runs WHERE id=?", (first["id"],))["status"] == "interrupted"
     assert store.one("SELECT status FROM tasks WHERE id=?", (task,))["status"] == "error"
+    assert store.one("SELECT status FROM tasks WHERE id=?", (chief,))["status"] == "error"
     assert store.claim()["id"] == second["id"]
 
 
