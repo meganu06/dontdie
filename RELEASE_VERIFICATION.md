@@ -2,7 +2,7 @@
 
 22 October 2026, Europe/London. Live application: https://dontdie.136.70.191.164.sslip.io. Operator access is private in the builder's ignored `runs/control-room-access.txt`; do not include it in a recording or repository.
 
-Deployed application revision: `c631fcb`. At 19:39 London time, the restarted release returned HTTPS 200 with the new global live-work fields, preserved both scheduled results, and reconnected Slack. Later documentation-only commits do not change the deployed application.
+Deployed application revision: `8e679a2`. At 19:43 London time, the restarted release returned HTTPS 200, served the navigation race fix, and preserved both scheduled results. The prior restart also verified global live-work fields and Slack reconnection. Later documentation-only commits do not change the deployed application.
 
 ## Demonstrated on Google Cloud
 
