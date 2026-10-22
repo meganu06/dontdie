@@ -1,0 +1,6 @@
+{
+  "display_information": {"name": "crew", "description": "Seven specialists pressure-test founder decisions"},
+  "features": {"bot_user": {"display_name": "crew", "always_online": true}},
+  "oauth_config": {"scopes": {"bot": ["app_mentions:read", "chat:write", "chat:write.customize"]}},
+  "settings": {"socket_mode_enabled": true, "event_subscriptions": {"bot_events": ["app_mention"]}, "org_deploy_enabled": false, "token_rotation_enabled": false}
+}

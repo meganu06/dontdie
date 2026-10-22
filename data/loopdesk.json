@@ -1,0 +1,928 @@
+{
+  "meta": {
+    "synthetic": true,
+    "company": "Loopdesk (fictional)",
+    "period": "2026-Q3",
+    "note": "Every source is a synthetic demo export. No live Zendesk, Intercom, Stripe, Xero, HubSpot, PostHog, Linear, G2 or competitor connection."
+  },
+  "accounts": [
+    {
+      "id": "a001",
+      "segment": "agency",
+      "staff": 25
+    },
+    {
+      "id": "a002",
+      "segment": "agency",
+      "staff": 25
+    },
+    {
+      "id": "a003",
+      "segment": "agency",
+      "staff": 25
+    },
+    {
+      "id": "a004",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a005",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a006",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a007",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a008",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a009",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a010",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a011",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a012",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a013",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a014",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a015",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a016",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a017",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a018",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a019",
+      "segment": "software",
+      "staff": 8
+    },
+    {
+      "id": "a020",
+      "segment": "software",
+      "staff": 8
+    }
+  ],
+  "support": [
+    {
+      "id": "zendesk-001",
+      "account_id": "a001",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-002",
+      "account_id": "a002",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-003",
+      "account_id": "a003",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-004",
+      "account_id": "a004",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-005",
+      "account_id": "a005",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-006",
+      "account_id": "a006",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-007",
+      "account_id": "a007",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-008",
+      "account_id": "a008",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-009",
+      "account_id": "a009",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-010",
+      "account_id": "a010",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-011",
+      "account_id": "a011",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-012",
+      "account_id": "a012",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-013",
+      "account_id": "a013",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-014",
+      "account_id": "a014",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-015",
+      "account_id": "a001",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-016",
+      "account_id": "a002",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-017",
+      "account_id": "a003",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-018",
+      "account_id": "a004",
+      "feature": "team_accounts",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-019",
+      "account_id": "a005",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-020",
+      "account_id": "a006",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-021",
+      "account_id": "a007",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-022",
+      "account_id": "a008",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-023",
+      "account_id": "a009",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-024",
+      "account_id": "a010",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-025",
+      "account_id": "a011",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-026",
+      "account_id": "a012",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-027",
+      "account_id": "a013",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-028",
+      "account_id": "a014",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-029",
+      "account_id": "a001",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    },
+    {
+      "id": "zendesk-030",
+      "account_id": "a002",
+      "feature": "other",
+      "source": "Zendesk synthetic export"
+    }
+  ],
+  "cancellations": [
+    {
+      "id": "stripe-cancel-01",
+      "account_id": "a001",
+      "reason": "needs_team_accounts",
+      "mrr_gbp": 120
+    },
+    {
+      "id": "stripe-cancel-02",
+      "account_id": "a002",
+      "reason": "needs_team_accounts",
+      "mrr_gbp": 120
+    },
+    {
+      "id": "stripe-cancel-03",
+      "account_id": "a003",
+      "reason": "needs_team_accounts",
+      "mrr_gbp": 120
+    },
+    {
+      "id": "stripe-cancel-04",
+      "account_id": "a004",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-05",
+      "account_id": "a005",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-06",
+      "account_id": "a006",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-07",
+      "account_id": "a007",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-08",
+      "account_id": "a008",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-09",
+      "account_id": "a009",
+      "reason": "budget",
+      "mrr_gbp": 50
+    },
+    {
+      "id": "stripe-cancel-10",
+      "account_id": "a010",
+      "reason": "budget",
+      "mrr_gbp": 50
+    }
+  ],
+  "deals": [
+    {
+      "id": "hubspot-01",
+      "account_id": "a003",
+      "arr_gbp": 4500,
+      "seats": 25,
+      "blocker": "team_accounts",
+      "segment": "agency"
+    },
+    {
+      "id": "hubspot-02",
+      "account_id": "a004",
+      "arr_gbp": 4500,
+      "seats": 25,
+      "blocker": "team_accounts",
+      "segment": "agency"
+    },
+    {
+      "id": "hubspot-03",
+      "account_id": "a005",
+      "arr_gbp": 4500,
+      "seats": 25,
+      "blocker": "team_accounts",
+      "segment": "software"
+    },
+    {
+      "id": "hubspot-04",
+      "account_id": "a006",
+      "arr_gbp": 4500,
+      "seats": 25,
+      "blocker": "team_accounts",
+      "segment": "software"
+    }
+  ],
+  "relationships": [],
+  "competitors": [
+    {
+      "id": "website-demo-A",
+      "name": "Fictional competitor A",
+      "team_accounts": true,
+      "gbp_per_seat_month": 15
+    },
+    {
+      "id": "website-demo-B",
+      "name": "Fictional competitor B",
+      "team_accounts": true,
+      "gbp_per_seat_month": 15
+    },
+    {
+      "id": "website-demo-C",
+      "name": "Fictional competitor C",
+      "team_accounts": false,
+      "gbp_per_seat_month": null
+    }
+  ],
+  "product_usage": [
+    {
+      "account_id": "a001",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a002",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a003",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a004",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a005",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a006",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a007",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a008",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a009",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a010",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a011",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a012",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a013",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a014",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a015",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a016",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a017",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a018",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a019",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a020",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a021",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a022",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a023",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a024",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a025",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a026",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a027",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a028",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a029",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a030",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a031",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a032",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a033",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a034",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a035",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a036",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a037",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a038",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a039",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a040",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a041",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a042",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a043",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a044",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a045",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a046",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a047",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a048",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a049",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a050",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a051",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a052",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a053",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a054",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a055",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a056",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a057",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a058",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a059",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a060",
+      "active": true,
+      "sharing": true
+    },
+    {
+      "account_id": "a061",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a062",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a063",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a064",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a065",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a066",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a067",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a068",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a069",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a070",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a071",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a072",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a073",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a074",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a075",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a076",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a077",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a078",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a079",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a080",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a081",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a082",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a083",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a084",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a085",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a086",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a087",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a088",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a089",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a090",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a091",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a092",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a093",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a094",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a095",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a096",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a097",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a098",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a099",
+      "active": true,
+      "sharing": false
+    },
+    {
+      "account_id": "a100",
+      "active": true,
+      "sharing": false
+    }
+  ],
+  "engineering": {
+    "weeks": 6,
+    "pilot_scope": "Invites and shared workspace for three design partners; defer per-seat billing and granular roles."
+  },
+  "finance": {
+    "cash_gbp": 450000,
+    "net_burn_gbp_month": 50000,
+    "incremental_contractor_cost_per_week_gbp": 5000,
+    "gross_margin": 0.8,
+    "seat_cost_gbp_month": 3.2,
+    "cost_assumption": "Additional contractor spend above existing payroll and baseline net burn; paid upfront for runway scenario."
+  },
+  "kpis": {
+    "users": 900,
+    "previous_users": 820,
+    "mrr_gbp": 18000
+  }
+}
