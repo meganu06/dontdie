@@ -40,3 +40,5 @@ Each executing role has its own temporary Google code sandbox; model requests an
 Single operator key, single VM, SQLite persistent disk. No account-management system, failover or automatic off-VM backup. The VM must remain running. Work queues behind other objectives; independent specialists within a plan can run concurrently. Schedule editing is delete-and-recreate; pause/delete stop future or queued work, not a running calculation.
 
 The earlier four-agent panel under the separate `dont-die` directory is not deployed. Its earlier design-hook findings were left outside this release; no suppressions were added. The current seven-agent interface has a stronger heading hierarchy and no thick side-card accent border.
+
+A subsequent `flat-type-hierarchy` finding on `web/index.html` was confirmed as a false positive: the detector cannot resolve the server route `/static/app.css` to `web/app.css`, so it assumes all type roles are 16px. Actual page headings are 38px on desktop and 32px on mobile over a 15px body; login headings are 58px/48px. A shared ignore is scoped to this one rule in this one HTML file. The deployed UI is unchanged.

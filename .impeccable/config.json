@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "web/index.html"
+        ],
+        "createdAt": "2026-10-22T18:45:30.419Z",
+        "reason": "Codex reviewed: detector cannot resolve the server route /static/app.css to web/app.css and assumes all roles are 16px. Actual CSS uses 38px desktop and 32px mobile h1 over 15px body, with 58px/48px login headings; screenshots from the deployed release confirm this hierarchy."
+      }
+    ]
+  }
+}
