@@ -2,7 +2,13 @@
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
-apt-get install -y -q python3 python3-venv git ca-certificates curl
+apt-get install -y -q python3 python3-venv git ca-certificates curl gnupg debian-keyring debian-archive-keyring apt-transport-https
+curl --fail --silent --show-error https://dl.cloudsmith.io/public/caddy/stable/gpg.key -o /tmp/dontdie-caddy-key
+gpg --dearmor --yes -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg /tmp/dontdie-caddy-key
+curl --fail --silent --show-error https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt -o /etc/apt/sources.list.d/caddy-stable.list
+chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg /etc/apt/sources.list.d/caddy-stable.list
+apt-get update -q
+apt-get install -y -q caddy
 id dontdie >/dev/null 2>&1 || useradd --system --create-home dontdie
 systemctl stop dontdie.service 2>/dev/null || true
 install -d -o dontdie -g dontdie /opt/dontdie
@@ -34,7 +40,7 @@ PY
 chown -R dontdie:dontdie /opt/dontdie
 cat > /etc/systemd/system/dontdie.service <<'UNIT'
 [Unit]
-Description=Don't Die seven-agent Slack bot
+Description=Don't Die control room, Slack and scheduler
 After=network-online.target
 Wants=network-online.target
 [Service]
@@ -42,8 +48,10 @@ User=dontdie
 Group=dontdie
 WorkingDirectory=/opt/dontdie
 ExecStartPre=/opt/dontdie/.venv/bin/python -u /opt/dontdie/bot.py --check-cloud
-ExecStart=/opt/dontdie/.venv/bin/python -u /opt/dontdie/bot.py
+ExecStart=/opt/dontdie/.venv/bin/python -u /opt/dontdie/server.py
 TimeoutStartSec=600
+TimeoutStopSec=240
+UMask=0077
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true
@@ -57,8 +65,20 @@ StandardError=journal+console
 WantedBy=multi-user.target
 UNIT
 install -d -o dontdie -g dontdie /opt/dontdie/runs
+chmod 700 /opt/dontdie/runs
 systemctl daemon-reload
 systemctl enable dontdie.service
 systemctl restart dontdie.service
 systemctl is-active dontdie.service
+web_host=$(metadata instance/attributes/dontdie-web-host)
+[[ "$web_host" =~ ^[a-zA-Z0-9.-]+$ ]]
+cat > /etc/caddy/Caddyfile <<CADDY
+$web_host {
+    header Strict-Transport-Security "max-age=31536000"
+    reverse_proxy 127.0.0.1:8080
+}
+CADDY
+caddy validate --config /etc/caddy/Caddyfile
+systemctl enable caddy
+systemctl reload caddy
 echo 'DONTDIE_BOOT_READY'

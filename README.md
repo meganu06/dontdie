@@ -1,71 +1,85 @@
-# Don't Die
+# Don’t Die — control room
 
-Seven Gemini agents in Slack pressure-test a founder's decision. Chief coordinates PMF, Retention, Competitor, Finance, GTM and Product. Each agent runs its calculation in a **different Google-managed code-execution sandbox**; every decision creates seven sandbox IDs and removes them afterwards. Slack is the interface, not the sandbox.
+One Chief, six specialists, a visible work queue and schedules that keep running on Google Cloud. The seven roles are **Chief, PMF, Retention, Competitor, Finance, GTM and Product**.
 
-**Business data is synthetic.** `data/loopdesk.json` is a fictional Loopdesk dataset based on the demo brief, not a live SaaS connection. Gemini inference and Google sandbox execution are real. We do not claim live Stripe, Xero, HubSpot, Zendesk, Intercom, PostHog, Linear, G2 or website access. Nothing charges customers, changes prices or sends outreach.
+**All business inputs are synthetic Loopdesk demo data.** Gemini inference and Google code-sandbox execution are real. There are no live Stripe, Zendesk, Intercom, Xero, HubSpot, PostHog, Linear, G2 or competitor-site integrations. Recommendations never change prices, charge customers, contact people or edit external systems.
 
-## Run locally
+## Open the deployed app
 
-Requires Python 3.11+, an authenticated Google Cloud project with billing and Agent Platform/Vertex AI enabled, and a Slack app with Socket Mode enabled.
+HTTPS URL: **https://dontdie.136.70.191.164.sslip.io**
+
+The operator access key is delivered privately, not committed. On the builder’s laptop it is in ignored `runs/control-room-access.txt`. A key grants control of all demo conversations, agents and schedules. Sign-in uses an HTTP-only session cookie with CSRF and origin checks. Secrets stay on the server in Secret Manager and a restricted local environment file.
+
+## Demo walkthrough
+
+1. Sign in, then ask Chief: **“Assess cancellation reasons and cancelled revenue; focus only on retention evidence.”** Watch Chief choose Retention rather than running every specialist.
+2. Inspect a task. Expand sources, findings, the full Google sandbox ID and the actual Python code. Public activity records show instructions, execution, findings and failures; recommendations are marked **proposed**.
+3. Use **Request follow-up** to ask “What are the strongest limitations of this conclusion?” Or use **Run** on any of the seven agents.
+4. Ask Chief: **“Schedule Finance to review runway in two minutes.”** Open Schedules to see its timezone, next run and status. Close the browser: the VM scheduler still executes the task. Reopen and inspect its last result.
+5. Create an interval/daily/weekly schedule, then test Pause, Resume and Delete. In History, reopen earlier conversations and runs.
+6. In Slack `#decisions`, send **`@crew hello`**, then a decision question. Slack-initiated conversations appear in the same web workspace. Web follow-ups inside those conversations also reply in their Slack thread. New web-only conversations are not broadcast to Slack.
+
+Cloud work usually takes tens of seconds to a few minutes. The queue is serial between objectives; independent specialist tasks within a Chief plan run concurrently.
+
+## Agent responsibilities
+
+| Agent | Evidence and responsibility |
+|---|---|
+| Chief | Select relevant specialists, issue instructions, validate dependencies, reconcile results, report users/growth/MRR and propose the next step. Create requested analysis schedules. |
+| PMF | Support-ticket feature demand, unique accounts and company segments. |
+| Retention | Cancellation reasons, already-lost MRR and churn hypotheses. |
+| Competitor | Compare supplied fictional team-feature and price snapshots. |
+| Finance | Incremental build costs, cash runway, gross-profit payback and unvalidated price experiments. |
+| GTM | Stalled deals, unbooked ARR, segments and supplied relationship data. |
+| Product | Sharing adoption with denominators, engineering estimates and pilot scope. |
+
+Chief produces a request-specific task graph, not a fixed pipeline. Each executing role receives a separate, temporary Google-managed code-execution sandbox and an independent Gemini request. A retention question may use only Retention and Chief; a broad decision can use all seven. The coordinator handles network calls outside the sandboxes. The Python tools are bounded and audited, not open-ended autonomous code generation. Each sandbox receives selected synthetic inputs and no credentials.
+
+## Persistence and scheduling
+
+One Python/aiohttp service runs the web API, Slack Socket Mode, a durable work queue and a scheduler. SQLite WAL lives at `runs/controlroom.sqlite3` on the Compute Engine persistent disk. Conversations, tasks, source evidence, code, events, schedules, sessions and results survive service/VM restarts.
+
+Schedule types: one-off local date/time, intervals of 1–10,080 minutes, daily local time and weekly day/time. Every schedule stores an IANA timezone. A due occurrence and its queue entry are committed together. If its previous occurrence is queued/running, a recurring occurrence is coalesced rather than overlapped. On restart, overdue schedules catch up once; missed intervals are not replayed individually. Daily times in spring-forward gaps move to the first valid local minute; fall-back uses the first occurrence.
+
+Pause/delete cancel queued occurrences and prevent future runs; work already executing finishes. Resume calculates a fresh next deadline. Completed one-off schedules need a new schedule to run again. Interrupted tasks are marked as failures with explicit Retry controls; they are not silently claimed successful. Schedules are limited to 50 in this demo. Chief creates schedules only from explicit scheduling requests; scheduled Chief runs cannot recursively create more schedules.
+
+The schedule loop runs on the VM, not in browser JavaScript. Keeping the VM powered on is required. Persistent disk survives a restart; this prototype has no automatic off-VM backup or multi-VM failover.
+
+## Local development
+
+Requires Python 3.11+, Google ADC, a billed Google project with the Agent Platform/Vertex AI API, and the dependencies below.
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Fill .env locally. Never commit tokens.
+# Set the project and optional Slack values in .env; never commit it.
+python scripts/init_web_access.py
 gcloud auth application-default login
-python bot.py
+python server.py --local
 ```
 
-Install the app into the workspace and invite `@crew` to the configured channel. Required bot scopes are `app_mentions:read`, `chat:write`, and `chat:write.customize`; the app token needs `connections:write`. Subscribe to the `app_mention` bot event. See `slack-manifest.json`.
-
-1. Send `@crew hello` to test the connection (no cloud computation).
-2. Send `@crew Should Loopdesk build team accounts next?` to run all seven agents.
-3. Chief acknowledges in a thread. Six specialists reply, then Chief gives a recommendation, next step, confidence and caveat. Replies are paced at least two seconds apart. Cloud cold starts can take several minutes.
-
-Run the same decision without posting to Slack:
+Open `http://127.0.0.1:8080`, using the key in `runs/control-room-access.txt`. Local mode disables its Slack listener so it does not compete with the cloud bot. It still runs real Google-backed jobs and its local scheduler. `python bot.py` starts the shared web/Slack/scheduler service; do not run a second listener against the deployed Slack app.
 
 ```sh
-python bot.py --once "Should Loopdesk build team accounts next?"
 pip install pytest
 python -m pytest -q
+python bot.py --check-cloud
 ```
 
-Results, source references, findings, distinct sandbox IDs and cleanup failures are saved in ignored `runs/<run_id>.json` files. Source IDs refer to records in the synthetic fixture. Logs avoid tokens and full API exception payloads. Use only one Socket Mode listener per app for this demo; two laptops running it can split events unpredictably.
+The legacy `python bot.py --once "Should Loopdesk build team accounts next?"` remains a console-only full-seven rehearsal. Its JSON receipts are independent of the web queue. `examples/cloud-rehearsal.json` records the original successful seven-sandbox rehearsal, not a fabricated response.
 
-## The seven-agent contract
+## Deployment and operations
 
-| Agent | Task and sandbox tool | Supplied data |
-|---|---|---|
-| Chief | Deduplicate evidence, report users/growth/MRR, challenge assumptions and choose a next step | KPI snapshot and six specialist results |
-| PMF | Count unique feature-demand accounts and segments, separating tickets from customers | Synthetic support records and account profiles |
-| Retention | Count cancellation reasons and associated cancelled MRR | Synthetic Stripe cancellation export |
-| Competitor | Compare team features and published seat-price snapshots | Three fictional competitor snapshots |
-| Finance | Calculate incremental cost, runway, conversion-sensitive gross-profit payback and price hypotheses | Synthetic Xero, engineering and HubSpot data; specialist results |
-| GTM | Group stalled deals by segment; quantify unbooked ARR; inspect supplied relationships | Synthetic HubSpot export; empty network data is reported as missing |
-| Product | Compute sharing adoption with its denominator; identify pilot scope and effort | Synthetic PostHog usage and Linear estimate |
+See `infra/OPERATIONS.md`. `infra/startup.sh` pins an exact GitHub commit, installs dependencies, retrieves its environment from Secret Manager, verifies Gemini/sandbox access and starts the unified systemd service. Caddy handles public HTTPS; Python binds only to localhost. Ports 80 and 443 are the only inbound application access on the dedicated VPC.
 
-Chief dispatches PMF, Retention, Competitor, GTM and Product concurrently. Finance follows with GTM, Product and Retention context. Chief receives all six results and runs a seventh independent sandbox check. Agent-to-agent communication is structured JSON through the coordinator, shown as short named Slack replies in one thread. Slack text is never parsed as commands from another agent.
+The event project’s existing Compute service account has a pre-existing Editor role. The event user cannot grant narrower project roles; no new project-wide IAM grant was made. Secret Accessor was granted only on the app’s specific secret. An administrator should move production workloads to a dedicated least-privilege identity. No Google service-account keys or personal account passwords are deployed.
 
-Each result contains `run_id`, `agent`, `status`, `findings` (claim, value, unit, period, source_ids, account_ids), `assumptions`, `limitations`, `recommendation`, `confidence`, and `sandbox_id`. Failed agents remain visible and lower Chief's confidence. There is no eighth Sceptic agent: Chief handles that responsibility.
+## Financial scenario assumptions
 
-The demo uses bounded, audited Python calculation tools in separate cloud sandboxes and one isolated Gemini request per agent. It does not implement open-ended autonomous coding, persistent agent memory, daily scheduling or trained willingness-to-pay prediction. The coordinator makes network/model calls; the code sandboxes receive only each role's selected input and no credentials. Sandbox TTL is one hour as a cleanup fallback.
+The six-week £30k build is additional contractor spending above existing payroll and net burn. £450k cash / £50k monthly net burn gives nine months of baseline runway, falling to 8.4 after the one-off cost, excluding new revenue. £18k stalled pipeline is assumed to be **annual recurring value**, not MRR or booked business. At 100% conversion and 80% margin it yields £1,200 monthly gross profit: 25-month payback after full launch; at 50%, 50 months; at zero, no finite payback. Ramp time is excluded. £15/£20/£25 prices are unvalidated experiments, not individual willingness-to-pay predictions.
 
-## Financial assumptions
+## Deliberate limits
 
-The six-week £30k build is assumed to be **additional contractor spending**, on top of existing payroll and monthly net burn. £450k cash and £50k net monthly burn produce 9 months of baseline runway and 8.4 months after that one-off cost, excluding any new revenue. £18k pipeline is annual recurring value, not monthly revenue or booked business. At 100% conversion and 80% gross margin it supports £1,200 monthly gross profit, so build payback is 25 months after launch; at 50%, 50 months; at zero, no payback. These simplified scenarios exclude ramp time. £15/£20/£25 prices are unvalidated experiments, not individual willingness-to-pay predictions.
-
-## Three-person handoff
-
-| Owner | Build responsibility | Final check |
-|---|---|---|
-| Emil + Codex | Google runtime, seven sandboxes, orchestration, calculations, deployment and GitHub integration | Full cloud rehearsal and seven distinct sandbox IDs |
-| Megan | Slack app configuration, `#decisions`, membership and judging walkthrough | Mention `@crew`, verify threaded names/icons and invite teammates |
-| Third teammate | Review demo inputs, agent prompts and pitch; replace fixtures only with authorized exports | Check sources, assumptions, arithmetic and one failure scenario |
-
-Keep edits in separate files where possible and pull before pushing. The central implementation is ready for teammates to review; avoid starting a second bot while the cloud service is running.
-
-## Cloud deployment
-
-`infra/startup.sh` boots a small Compute Engine VM, checks out an exact public GitHub commit from instance metadata, installs dependencies, reads its Slack environment from Secret Manager using the VM's service account, and starts `dontdie.service`. No Google service-account keys or account passwords are deployed. The event project already authorizes its default Compute service account, so the demo uses that identity. Its pre-existing Editor role is broader than this bot needs; an administrator should grant a dedicated identity Agent Platform User and access to this one secret before production. Our event user cannot change project IAM. The VM makes outbound Slack/Gemini calls and exposes no application port. See `infra/OPERATIONS.md` for operating and stopping it.
+Single-operator access key, single VM and SQLite; no full account management, failover or automated backups. No arbitrary cron expressions, calendar invitations, schedule editing or cancellation of already-running sandboxes from the UI. Change a schedule by deleting it and creating a replacement. No live SaaS connectors, web research, trained pricing model, external business writes or private chain-of-thought display. Human review remains necessary for model-generated interpretations of synthetic evidence.

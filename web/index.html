@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Don’t Die — Control room</title>
+  <link rel="stylesheet" href="/static/app.css"><script defer src="/static/app.js"></script>
+</head>
+<body>
+<section id="login-view" class="login-wrap">
+  <div class="login-card"><p class="eyebrow">FOUNDER OPERATIONS</p><h1>Don’t Die.</h1><p class="login-lead">Your crew’s control room.</p><p>Ask Chief a question. Watch the work. Decide what happens next.</p>
+  <form id="login-form"><label for="access-key">Private access key</label><input id="access-key" name="key" type="password" autocomplete="current-password" required><button class="primary" type="submit">Open control room <span aria-hidden="true">→</span></button><p id="login-error" class="error" role="alert"></p></form>
+  <p class="fine">Protected operator access. Business data is synthetic; Google Cloud execution is live.</p></div>
+</section>
+<div id="app" hidden>
+  <header class="masthead"><div class="brand"><strong>Don’t Die<span class="brand-dot">.</span></strong><span>CONTROL ROOM</span></div><div class="header-right"><span class="data-badge">SYNTHETIC BUSINESS DATA</span><span id="connection" class="connection">Connecting</span><button id="logout" class="quiet">Sign out</button></div></header>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <div class="shell" id="shell" data-view="chief">
+    <aside class="crew-panel" aria-label="Agent roster"><div class="section-line"><h2>Your crew</h2><span class="count">7</span></div><p class="muted small">Each executing agent gets its own Google sandbox.</p><div id="roster"></div><div class="crew-note"><span class="small-label">OPERATING BOUNDARY</span><p>Agents analyse and propose. No live SaaS access, outreach or pricing changes.</p></div></aside>
+    <main>
+      <nav class="tabs" aria-label="Control room views"><button data-tab="chief" class="selected">Chief</button><button data-tab="schedules">Schedules <span id="schedule-count">0</span></button><button data-tab="history">History</button></nav>
+      <section id="chief-view" class="view">
+        <div class="page-heading"><div><p class="eyebrow">ONE OBJECTIVE. THE RIGHT SPECIALISTS.</p><h1>Talk to Chief.</h1></div><button id="new-conversation" class="secondary">New conversation</button></div>
+        <div class="conversation-tools"><label class="sr-only" for="conversation-select">Conversation</label><select id="conversation-select"><option value="">New conversation</option></select><span id="run-state" class="status idle">READY</span></div>
+        <div id="messages" class="messages" aria-live="polite" aria-relevant="additions"></div>
+        <div id="task-plan" class="task-plan" hidden></div>
+        <form id="chat-form" class="composer"><label for="objective">Give Chief an objective</label><textarea id="objective" name="objective" rows="3" maxlength="2000" placeholder="Should we build team accounts, or fix retention first?" required></textarea><div class="composer-bottom"><span id="chat-hint" class="muted small">Chief chooses who to involve. Recommendations stay proposed.</span><button class="primary" type="submit">Send to Chief <span aria-hidden="true">↗</span></button></div><p id="chat-error" class="error" role="alert"></p></form>
+        <div class="suggestions"><button data-prompt="Assess why customers are cancelling and what we should test next.">Investigate churn</button><button data-prompt="Compare competitor team-account pricing and propose a pricing experiment.">Check pricing</button><button data-prompt="Schedule Finance to review runway in two minutes.">Schedule a Finance check</button></div>
+        <p class="fine source-note">Loopdesk is a fictional company. Sources, figures and customer records are demo fixtures.</p>
+      </section>
+      <section id="schedules-view" class="view" hidden><div class="page-heading"><div><p class="eyebrow">WORK THAT CONTINUES WITHOUT YOU</p><h1>On the calendar.</h1></div><button id="new-schedule" class="primary">Create schedule</button></div><p class="intro">Runs execute on Google Cloud when your browser and laptop are closed. Pause or delete to stop future runs.</p><div id="schedules"></div><p class="fine">Intervals, daily and weekly runs coalesce if the previous occurrence is still working. Daily times follow the selected timezone.</p></section>
+      <section id="history-view" class="view" hidden><div class="page-heading"><div><p class="eyebrow">PERSISTENT WORKSPACE</p><h1>The record.</h1></div></div><p class="intro">Conversations, tasks and results stay here across service restarts.</p><div id="history"></div></section>
+    </main>
+    <aside class="activity-panel"><div class="section-line"><h2>Live activity</h2><span id="queue-count" class="muted small"></span></div><p class="muted small">Execution records and short public explanations—not private model reasoning.</p><div id="activity" class="activity"></div></aside>
+  </div>
+</div>
+
+<dialog id="agent-dialog"><form id="agent-form"><div class="dialog-heading"><div><p class="eyebrow">DIRECT ASSIGNMENT</p><h2 id="agent-dialog-title">Run agent</h2></div><button type="button" data-close="agent-dialog" class="close" aria-label="Close">×</button></div><label for="agent-objective">Objective or follow-up</label><textarea id="agent-objective" rows="5" maxlength="2000" required></textarea><p class="fine">A new task runs in its own Google sandbox. Follow-ups receive the previous run’s results.</p><p id="agent-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" class="secondary" data-close="agent-dialog">Cancel</button><button type="submit" class="primary">Queue task</button></div></form></dialog>
+
+<dialog id="inspect-dialog" class="inspect-dialog"><div class="dialog-heading"><div><p class="eyebrow">EVIDENCE & EXECUTION</p><h2 id="inspect-title">Task details</h2></div><button data-close="inspect-dialog" class="close" aria-label="Close task details">×</button></div><div id="inspect-content"></div><div id="inspect-actions" class="dialog-actions"></div></dialog>
+
+<dialog id="schedule-dialog"><form id="schedule-form"><div class="dialog-heading"><div><p class="eyebrow">CLOUD SCHEDULER</p><h2>Create a schedule</h2></div><button type="button" data-close="schedule-dialog" class="close" aria-label="Close schedule">×</button></div>
+  <label for="schedule-title">Name</label><input id="schedule-title" name="title" maxlength="100" placeholder="Morning runway check" required>
+  <label for="schedule-agent">Agent</label><select id="schedule-agent" name="agent"></select>
+  <label for="schedule-objective">Objective</label><textarea id="schedule-objective" name="objective" rows="3" maxlength="2000" placeholder="Review runway and flag assumptions that need validation." required></textarea>
+  <div class="form-grid"><div><label for="schedule-kind">Frequency</label><select id="schedule-kind" name="kind"><option value="once">Once</option><option value="interval">Every N minutes</option><option value="daily">Daily</option><option value="weekly">Weekly</option></select></div><div><label for="schedule-timezone">Timezone</label><input id="schedule-timezone" name="timezone" list="timezones" value="Europe/London" required><datalist id="timezones"><option value="Europe/London"><option value="UTC"><option value="America/New_York"><option value="America/Los_Angeles"><option value="Asia/Kolkata"></datalist></div></div>
+  <div data-frequency="once"><label for="schedule-once">Local date and time</label><input id="schedule-once" name="when_local" type="datetime-local" step="1"></div>
+  <div data-frequency="interval" hidden><label for="schedule-interval">Minutes between runs</label><input id="schedule-interval" name="interval_minutes" type="number" min="1" max="10080" value="60"></div>
+  <div data-frequency="weekly" hidden><label for="schedule-weekday">Weekday</label><select id="schedule-weekday" name="weekday"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option></select></div>
+  <div data-frequency="daily weekly" hidden><label for="schedule-time">Local time</label><input id="schedule-time" name="time_local" type="time" value="09:00"></div>
+  <p class="fine">This schedules analysis only. It cannot change prices, contact customers or edit external systems.</p><p id="schedule-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" class="secondary" data-close="schedule-dialog">Cancel</button><button type="submit" class="primary">Save schedule</button></div>
+</form></dialog>
+</body></html>

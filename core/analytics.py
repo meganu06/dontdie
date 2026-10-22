@@ -26,6 +26,12 @@ def analyse(agent, data, upstream=None):
         teams = [r for r in rows if r["reason"] == "needs_team_accounts"]
         fact("Cancellations mentioning team features", len(teams), "of " + str(len(rows)) + " cancellations", [r["id"] for r in rows], [r["account_id"] for r in teams], "2026-09 (demo)")
         fact("Cancelled MRR mentioning team features", sum(r["mrr_gbp"] for r in teams), "GBP/month", [r["id"] for r in teams], [r["account_id"] for r in teams], "2026-09 (demo)")
+        fact("Cancellation reasons", dict(Counter(r["reason"] for r in rows)), "cancellation counts", [r["id"] for r in rows], period="2026-09 (demo)")
+        fact("Total cancelled MRR", sum(r["mrr_gbp"] for r in rows), "GBP/month already lost", [r["id"] for r in rows], period="2026-09 (demo)")
+        by_reason = {}
+        for row in rows:
+            by_reason[row["reason"]] = by_reason.get(row["reason"], 0) + row["mrr_gbp"]
+        fact("Cancelled MRR by reason", by_reason, "GBP/month already lost", [r["id"] for r in rows], period="2026-09 (demo)")
     elif agent == "competitor":
         rows = data["competitors"]
         teams = [r for r in rows if r["team_accounts"]]
@@ -74,7 +80,7 @@ def analyse(agent, data, upstream=None):
             for finding in upstream.get(role, {}).get("findings", []):
                 evidence_accounts.update(finding.get("account_ids", []))
         fact("Unique accounts across demand, churn and pipeline signals", len(evidence_accounts), "accounts, deduplicated", [], sorted(evidence_accounts))
-        fact("Unavailable specialist results", [r for r in ("pmf", "retention", "competitor", "finance", "gtm", "product") if upstream.get(r, {}).get("status") != "ok"], "agents", [])
+        fact("Unavailable requested specialist results", [r for r, result in upstream.items() if result.get("status") != "ok"], "agents", [])
     else:
         raise ValueError("Unknown agent")
     return facts

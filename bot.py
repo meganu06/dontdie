@@ -150,7 +150,10 @@ def main():
             if any(r["status"] != "ok" for r in record["agents"].values()):
                 raise SystemExit(1)
         else:
-            asyncio.run(slack_main(settings))
+            # The default entry point now shares persistence, scheduling and
+            # adaptive routing with the protected web control room.
+            from server import main as server_main
+            server_main()
     except KeyboardInterrupt:
         print("Stopped.")
 
