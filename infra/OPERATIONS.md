@@ -1,6 +1,8 @@
 # Cloud operations
 
-Project: `moonfire-build26lon-695`. Intended VM: `dontdie-slack` in `us-east4-a`, small `e2-medium`, dedicated service account `dontdie-bot`, dedicated VPC `dontdie-net` with no inbound firewall rules. Slack requires no public HTTP endpoint.
+Project: `moonfire-build26lon-695`. VM: `dontdie-slack` in `us-east4-a`, small `e2-medium`, dedicated VPC `dontdie-net` with no inbound firewall rules. Slack requires no public HTTP endpoint.
+
+The event project pre-authorizes `715043009535-compute@developer.gserviceaccount.com` with Editor, and permits our event user to attach it. The demo uses that existing identity plus Secret Accessor on only `dontdie-slack-env`. No new project-wide IAM grant was made. A new `dontdie-bot` account was created during setup but is unused because the event user cannot grant project roles; an administrator can later grant it the narrower Agent Platform User role and secret access, then switch the VM identity.
 
 Read boot and service console output:
 
