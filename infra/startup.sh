@@ -8,11 +8,11 @@ install -d -o dontdie -g dontdie /opt/dontdie
 metadata() { curl --fail --silent --show-error -H 'Metadata-Flavor: Google' "http://metadata.google.internal/computeMetadata/v1/$1"; }
 revision=$(metadata instance/attributes/dontdie-revision)
 if [ ! -d /opt/dontdie/.git ]; then
-  git clone https://github.com/meganu06/dontdie.git /opt/dontdie
+  runuser -u dontdie -- git clone https://github.com/meganu06/dontdie.git /opt/dontdie
 fi
 cd /opt/dontdie
-git fetch origin
-git checkout --detach "$revision"
+runuser -u dontdie -- git fetch origin
+runuser -u dontdie -- git checkout --detach "$revision"
 python3 -m venv .venv
 .venv/bin/pip install --disable-pip-version-check -r requirements.txt
 # Fetch secrets without putting them in command arguments, logs or instance metadata.
